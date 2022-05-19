@@ -6,11 +6,11 @@ from InlineBot.database import present_in_userbase, add_to_userbase
 
 start_keyboard = [
     [
-        InlineKeyboardButton(text = 'Search Here', switch_inline_query_current_chat = ''),
-        InlineKeyboardButton(text = '🤖 About', callback_data = "about")
+        InlineKeyboardButton(text = '🔍 Search Here', switch_inline_query_current_chat = ''),
+        InlineKeyboardButton(text = 'About 🤖', callback_data = "about")
     ],
     [
-        InlineKeyboardButton(text = '🤔 Help', callback_data = "help"),
+        InlineKeyboardButton(text = '💡 Help', callback_data = "help"),
         InlineKeyboardButton(text = 'Close 🔒', callback_data = "close"),
         
     ]
@@ -18,17 +18,18 @@ start_keyboard = [
 
 start_keyboard_c = [
     [
-        InlineKeyboardButton(text = '🤖 About', callback_data = "about"),
-        InlineKeyboardButton(text = 'Close 🔒', callback_data = "close")
+        InlineKeyboardButton(text = '🔍 Search Here 🔍', switch_inline_query_current_chat = '')
+        
     ],
     [
-        InlineKeyboardButton(text = 'Search Here', switch_inline_query_current_chat = '')
+        InlineKeyboardButton(text = '🤖 About', callback_data = "about"),
+        InlineKeyboardButton(text = 'Close 🔒', callback_data = "close")
     ]
 ]
 
 help_keyboard = [
     [
-        InlineKeyboardButton(text = '✏️ Markdown Helper ✏️', callback_data = 'markdownhelper')
+        InlineKeyboardButton(text = '💡 Markdown Helper 💡', callback_data = 'markdownhelper')
     ],
     [
         InlineKeyboardButton(text = '🤖 About', callback_data = 'about'),
@@ -38,7 +39,7 @@ help_keyboard = [
 
 about_keyboard = [
      [
-        InlineKeyboardButton(text = '🤔 Help', callback_data = 'help'),
+        InlineKeyboardButton(text = '💡 Help', callback_data = 'help'),
         InlineKeyboardButton(text = 'Close 🔒', callback_data = 'close')
     ]
 ]
