@@ -47,7 +47,7 @@ about_keyboard = [
 about_keyboard_c = [
     [
         InlineKeyboardButton(text = 'Close 🔒', callback_data = 'close'),
-        InlineKeyboardButton(text = '🔙 Back', callback_data = 'about'),
+        InlineKeyboardButton(text = '🔙 Back', callback_data = 'start'),
     ]
 ]
 
