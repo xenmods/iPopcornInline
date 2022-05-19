@@ -13,7 +13,7 @@ A Telegram Bot for filter in Inline
 
 ### Installation
 #### Deploy on Heroku
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)</br>
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/RoyalKrrishna/Inline-Image)
 
 #### Deploy in your VPS
 ````bash
