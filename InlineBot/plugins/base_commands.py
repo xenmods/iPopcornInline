@@ -18,11 +18,10 @@ start_keyboard = [
 
 start_keyboard_c = [
     [
-        InlineKeyboardButton(text = '🔍 Search Here 🔍', switch_inline_query_current_chat = ''),
-        InlineKeyboardButton(text = '🤖 About', callback_data = "about")
-        
+        InlineKeyboardButton(text = '🔍 Search Here 🔍', switch_inline_query_current_chat = '')
     ],
     [
+        InlineKeyboardButton(text = '🤖 About', callback_data = "about"),
         InlineKeyboardButton(text = 'Close 🔒', callback_data = "close")
     ]
 ]
