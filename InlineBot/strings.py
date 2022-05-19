@@ -47,7 +47,7 @@ HELP_MESSAGE = f"""<b><u>Main Available Commands</u></b>
 
 ABOUT_MESSAGE = f"""<b><u>ABOUT ME</u></b>
 
-<b>○ Maintained By : <a href='tg://user?id={OWNER_ID}'>Mr. Perfect 😜</a>
+<b>○ Created By : @RoyalKrrishna 🕵️</a>
 ○ Channel : <a href='https://t.me/TechnoKrrish'>Techno Krrish</a>
 ○ Support : <a href='https://t.me/iPopcornMovieGroup'>I Popcorn Movie Group</a></b>
 """
