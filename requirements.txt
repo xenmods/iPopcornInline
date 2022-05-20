@@ -1,4 +1,4 @@
-pyrogram==1.4.15
+https://github.com/Mahesh0253/pyrogram/archive/inline.zip
 pymongo
 TgCrypto
 telegraph
