@@ -259,7 +259,7 @@ async def get_all(client: CodeXBotz, message: Message):
             filterlist += keywords
 
         if len(filterlist) > 4096:
-            with io.BytesIO(str.encode(filterlist.replace("`", ""))) as keyword_file:
+            with io.BytesIO(str.encode(filterlist.replace("<code>", "").replace("</code>","").replace('<b>', '').replace('</b>', ''))) as keyword_file:
                 sts = await message.reply('<i>Please wait..</i>')
                 keyword_file.name = "filters.txt"
                 await message.reply_document(
