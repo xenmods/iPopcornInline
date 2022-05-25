@@ -73,7 +73,7 @@ async def get_filters(text):
     else:
         regex = f"^{text}.*"
         query = {'text': {'$regex' : regex}}
-        documents = filter_collection.find(query).sort('text', 1).limit(1600)
+        documents = filter_collection.find(query).sort('text', 1).limit(50)
         return documents
 
 async def get_alerts(id):
