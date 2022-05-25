@@ -69,7 +69,7 @@ async def get_filters(text):
         documents = filter_collection.find()
         doc_list = list(documents)
         doc_list.reverse()
-        return doc_list[:50000]
+        return doc_list[:1600]
     else:
         regex = f"^{text}.*"
         query = {'text': {'$regex' : regex}}
