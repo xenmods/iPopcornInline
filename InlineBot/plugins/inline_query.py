@@ -82,9 +82,9 @@ async def give_filter(client: CodeXBotz, query: InlineQuery):
         results.append(result)
         
     if len(results) != 0:
-        switch_pm_text = f"Total {len(results)} Matches"
+        switch_pm_text = f"Show {len(results)} Search More.🔍"
     else:
-        switch_pm_text = "No matches"
+        switch_pm_text = "Not Found❗Please Type Correct Spelling.👇🏻"
 
     await query.answer(
         results = results,
