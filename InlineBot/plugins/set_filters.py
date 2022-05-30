@@ -28,78 +28,79 @@ from InlineBot import FILTER_COMMAND, DELETE_COMMAND
 
 @CodeXBotz.on_message(filters.command(FILTER_COMMAND) & filters.admins)
 async def new_filter(client: CodeXBotz, message: Message):
+    try:
+        strid = str(uuid.uuid4())
+        args = message.text.html.split(None, 1)
 
-    strid = str(uuid.uuid4())
-    args = message.text.html.split(None, 1)
-    
-    if len(args) < 2:
-        await message.reply_text("Please Use Correct format 😒", quote=True)
-        return
-    
-    extracted = split_quotes(args[1])
-    text = extracted[0].lower()
-    msg_type = 'Text'
-   
-    if not message.reply_to_message and len(extracted) < 2:
-        await message.reply_text("Add some content to save your filter❗", quote=True)
-        return
-
-    if (len(extracted) >= 2) and not message.reply_to_message:
-        reply_text, btn, alert = generate_button(extracted[1], strid)
-        fileid = None
-        if not reply_text:
-            await message.reply_text("You cannot have buttons alone, give some text to go with it❗", quote=True)
+        if len(args) < 2:
+            await message.reply_text("Please Use Correct format 😒", quote=True)
             return
 
-    elif message.reply_to_message and message.reply_to_message.reply_markup:
-        reply_text = ""
-        btn = []
-        fileid = None
-        alert = None
+        extracted = split_quotes(args[1])
+        text = extracted[0].lower()
         msg_type = 'Text'
-        try:
-            rm = message.reply_to_message.reply_markup
-            btn = rm.inline_keyboard
-            replied = message.reply_to_message
-            msg = replied.document or replied.video or replied.audio or replied.animation or replied.sticker or replied.voice or replied.video_note or None
-            if msg:
-                fileid = msg.file_id
-                if replied.document:
-                    msg_type = 'Document'
-                elif replied.video:
-                    msg_type = 'Video'
-                elif replied.audio:
-                    msg_type = 'Audio'
-                elif replied.animation:
-                    msg_type = 'Animation'
-                elif replied.sticker:
-                    msg_type = 'Sticker'
-                elif replied.voice:
-                    msg_type = 'Voice'
-                elif replied.video_note:
-                    msg_type = 'Video Note'
 
-                reply_text = message.reply_to_message.caption.html
-            
-            elif replied.photo:
-                fileid = await upload_photo(replied)
-                msg_type = 'Photo'
-                if not fileid:
-                    return
-                reply_text = message.reply_to_message.caption.html
-            
-                    
-            elif replied.text:
-                reply_text = message.reply_to_message.text.html
-                msg_type = 'Text'
-                fileid = None
-            else:
-                await message.reply('Not Supported..!')
+        if not message.reply_to_message and len(extracted) < 2:
+            await message.reply_text("Add some content to save your filter❗", quote=True)
+            return
+
+        if (len(extracted) >= 2) and not message.reply_to_message:
+            reply_text, btn, alert = generate_button(extracted[1], strid)
+            fileid = None
+            if not reply_text:
+                await message.reply_text("You cannot have buttons alone, give some text to go with it❗", quote=True)
                 return
+
+        elif message.reply_to_message and message.reply_to_message.reply_markup:
+            reply_text = ""
+            btn = []
+            fileid = None
             alert = None
-        except:
-            pass
-            
+            msg_type = 'Text'
+            try:
+                rm = message.reply_to_message.reply_markup
+                btn = rm.inline_keyboard
+                replied = message.reply_to_message
+                msg = replied.document or replied.video or replied.audio or replied.animation or replied.sticker or replied.voice or replied.video_note or None
+                if msg:
+                    fileid = msg.file_id
+                    if replied.document:
+                        msg_type = 'Document'
+                    elif replied.video:
+                        msg_type = 'Video'
+                    elif replied.audio:
+                        msg_type = 'Audio'
+                    elif replied.animation:
+                        msg_type = 'Animation'
+                    elif replied.sticker:
+                        msg_type = 'Sticker'
+                    elif replied.voice:
+                        msg_type = 'Voice'
+                    elif replied.video_note:
+                        msg_type = 'Video Note'
+
+                    reply_text = message.reply_to_message.caption.html
+
+                elif replied.photo:
+                    fileid = await upload_photo(replied)
+                    msg_type = 'Photo'
+                    if not fileid:
+                        return
+                    reply_text = message.reply_to_message.caption.html
+
+
+                elif replied.text:
+                    reply_text = message.reply_to_message.text.html
+                    msg_type = 'Text'
+                    fileid = None
+                else:
+                    await message.reply('Not Supported..!')
+                    return
+                alert = None
+            except:
+                pass
+    except Exception as e:
+        await message.reply(f'I got an error! \nError: {e}')
 
     elif message.reply_to_message and message.reply_to_message.photo:
         try:
