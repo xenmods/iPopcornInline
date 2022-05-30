@@ -4,6 +4,7 @@ import re
 import ast
 from InlineBot import (
     CodeXBotz,
+    Message,
     thumb,
     filters,
     InlineQuery,
