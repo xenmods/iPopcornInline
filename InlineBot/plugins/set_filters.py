@@ -233,8 +233,9 @@ async def new_filter(client: CodeXBotz, message: Message):
     except Exception as e:
         await message.reply(f'I got an error! \nError: {e}')
 
-    @CodeXBotz.on_message(filters.command(DELETE_COMMAND) & filters.admins)
-    async def del_filter(client: CodeXBotz, message: Message):
+@CodeXBotz.on_message(filters.command(DELETE_COMMAND) & filters.admins)
+async def del_filter(client: CodeXBotz, message: Message):
+    try:
         try:
             cmd, text = message.text.split(" ", 1)
         except:
