@@ -25,7 +25,7 @@ from InlineBot.database import (
 @CodeXBotz.on_message(filters.private & filters.incoming)
 async def give_filter(client: CodeXBotz, query: Message):
     text = query.text.lower()
-    if '/start' in text or '/about' in text:
+    if '/start' in text or '/about' in text or '/add' in text or '/del' in text or '/filters' in text or '/export' in text or '/stats' in text or '/broadcast' in text or '/delall' in text or '/import' in text:
         return
     documents = await get_filters(text)
     results = []
