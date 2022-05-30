@@ -22,9 +22,11 @@ from InlineBot.database import (
     get_filters
 )
 
-@CodeXBotz.on_message(filters.private & filters.command('search'))
+@CodeXBotz.on_message(filters.private & filters.incoming)
 async def give_filter(client: CodeXBotz, query: Message):
-    text = query.text.lower().replace('/search ', '')
+    text = query.text.lower()
+    if '/start' in text or '/about' in text:
+        return
     documents = await get_filters(text)
     results = []
     for document in documents:
