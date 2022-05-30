@@ -21,9 +21,9 @@ from InlineBot.database import (
     get_filters
 )
 
-@CodeXBotz.on_inline_query(filters.inline)
-async def give_filter(client: CodeXBotz, query: InlineQuery):
-    text = query.query.lower()
+@CodeXBotz.on_inline_query(filters.private & filters.command('search'))
+async def give_filter(client: CodeXBotz, query: Message):
+    text = query.text.lower()
     documents = await get_filters(text)
     results = []
     for document in documents:
@@ -42,56 +42,59 @@ async def give_filter(client: CodeXBotz, query: InlineQuery):
             
         if fileid == 'None':
             try:
-                result = InlineQueryResultArticle(
-                    title=keyword.upper(),
-                    input_message_content=InputTextMessageContent(message_text = reply_text, disable_web_page_preview = True,
-                        parse_mode = 'html'),
-                    description='Text',
-                    thumb_url = thumb,
-                    reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
-                )
+                result = await query.reply_text(reply_text, disable_web_page_preview=True, reply_markup=None if button ==  None else InlineKeyboardMarkup(eval(button)), parse_mode = 'html')
+#                 result = InlineQueryResultArticle(
+#                     title=keyword.upper(),
+#                     input_message_content=InputTextMessageContent(message_text = reply_text, disable_web_page_preview = True,
+#                         parse_mode = 'html'),
+#                     description='Text',
+#                     thumb_url = thumb,
+#                     reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
+#                 )
             except:
                 continue
         elif msg_type == 'Photo':
             try:
-                result = InlineQueryResultPhoto(
-                    photo_url = fileid,
-                    title = keyword.upper(),
-                    description = 'Photo',
-                    parse_mode = 'html',
-                    caption = reply_text or '',
-                    reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
-                )
+                result = await query.reply_photo(photo=fileid, caption=reply_text or '', reply_markup=None if button ==  None else InlineKeyboardMarkup(eval(button)), parse_mode = 'html')
+#                 result = InlineQueryResultPhoto(
+#                     photo_url = fileid,
+#                     title = keyword.upper(),
+#                     description = 'Photo',
+#                     parse_mode = 'html',
+#                     caption = reply_text or '',
+#                     reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
+#                 )
             except:
                 continue
         elif fileid:
             try:
-                result = InlineQueryResultCachedDocument(
-                    title = keyword.upper(),
-                    file_id = fileid,
-                    caption = reply_text or "",
-                    parse_mode = 'html',
-                    description = msg_type,
-                    reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
-                )
+                result = await client.send_cached_media(chat_id=query.chat_id, file_id=fileid, caption=reply_text or '', parse_mode='html', reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button)))
+#                 result = InlineQueryResultCachedDocument(
+#                     title = keyword.upper(),
+#                     file_id = fileid,
+#                     caption = reply_text or "",
+#                     parse_mode = 'html',
+#                     description = msg_type,
+#                     reply_markup= None if button ==  None else InlineKeyboardMarkup(eval(button))
+#                 )
             except:
                 continue
         else:
-            continue
-
-        results.append(result)
+            return await query.reply_text('Not Found❗Please Type Correct Spelling.👇🏻')
+    
+#         results.append(result)
         
-    if len(results) != 0:
-        switch_pm_text = f"Show {len(results)} Search More.🔍"
-    else:
-        switch_pm_text = "Not Found❗Please Type Correct Spelling.👇🏻"
+#     if len(results) != 0:
+#         switch_pm_text = f"Show {len(results)} Search More.🔍"
+#     else:
+#         switch_pm_text = "Not Found❗Please Type Correct Spelling.👇🏻"
 
-    await query.answer(
-        results = results,
-        is_personal = True,
-        switch_pm_text = switch_pm_text,
-        switch_pm_parameter = 'start'
-    )
+#     await query.answer(
+#         results = results,
+#         is_personal = True,
+#         switch_pm_text = switch_pm_text,
+#         switch_pm_parameter = 'start'
+#     )
         
         
 @CodeXBotz.on_callback_query(filters.regex(r"^(alertmessage):(\d):(.*)"))
