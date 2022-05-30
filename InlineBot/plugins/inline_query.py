@@ -21,9 +21,9 @@ from InlineBot.database import (
     get_filters
 )
 
-@CodeXBotz.on_inline_query(filters.private & filters.command('search'))
+@CodeXBotz.on_message(filters.private & filters.command('search'))
 async def give_filter(client: CodeXBotz, query: Message):
-    text = query.text.lower()
+    text = query.text.lower().replace('/search ', '')
     documents = await get_filters(text)
     results = []
     for document in documents:
