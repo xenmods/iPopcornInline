@@ -99,154 +99,157 @@ async def new_filter(client: CodeXBotz, message: Message):
                 alert = None
             except:
                 pass
+
+
+        elif message.reply_to_message and message.reply_to_message.photo:
+            try:
+                fileid = await upload_photo(message.reply_to_message)
+                if not fileid:
+                    return
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Photo'
+
+        elif message.reply_to_message and message.reply_to_message.video:
+            try:
+                fileid = message.reply_to_message.video.file_id
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Video'
+
+        elif message.reply_to_message and message.reply_to_message.audio:
+            try:
+                fileid = message.reply_to_message.audio.file_id
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Audio'
+
+        elif message.reply_to_message and message.reply_to_message.document:
+            try:
+                fileid = message.reply_to_message.document.file_id
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Document'
+
+        elif message.reply_to_message and message.reply_to_message.animation:
+            try:
+                fileid = message.reply_to_message.animation.file_id
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Animation'
+
+        elif message.reply_to_message and message.reply_to_message.sticker:
+            try:
+                fileid = message.reply_to_message.sticker.file_id
+                reply_text, btn, alert = generate_button(extracted[1], strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Sticker'
+
+        elif message.reply_to_message and message.reply_to_message.voice:
+            try:
+                fileid = message.reply_to_message.voice.file_id
+                reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Voice'
+        elif message.reply_to_message and message.reply_to_message.video_note:
+            try:
+                fileid = message.reply_to_message.video_note.file_id
+                reply_text, btn, alert = generate_button(extracted[1], strid)
+            except Exception as a:
+                reply_text = ""
+                btn = []
+                alert = None
+            msg_type = 'Video Note'
+        elif message.reply_to_message and message.reply_to_message.text:
+            try:
+                fileid = None
+                reply_text, btn, alert = generate_button(message.reply_to_message.text.html, strid)
+            except:
+                reply_text = ""
+                btn = []
+                alert = None
+        else:
+            await message.reply('Not Supported..!')
+            return
+
+        try:
+            if fileid:
+                if msg_type == 'Photo':
+                    await message.reply_photo(
+                        photo=fileid,
+                        caption=reply_text,
+                        reply_markup=InlineKeyboardMarkup(btn) if len(btn) != 0 else None
+                    )
+                else:
+                    await message.reply_cached_media(
+                        file_id=fileid,
+                        caption=reply_text,
+                        reply_markup=InlineKeyboardMarkup(btn) if len(btn) != 0 else None
+                    )
+            else:
+                await message.reply(
+                    text=reply_text,
+                    disable_web_page_preview=True,
+                    reply_markup=InlineKeyboardMarkup(btn) if len(btn) != 0 else None
+                )
+        except Exception as a:
+            try:
+                await message.reply(text=f"<b>❌ Error</b>\n\n{str(a)}\n\n<i>Join @TechnoKrrish for Support</i>")
+            except:
+                pass
+            return
+
+        await add_filter(text, reply_text, btn, fileid, alert, msg_type, strid)
+        reply_markup = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(text='📩 Share filter', switch_inline_query=text),
+                    InlineKeyboardButton(text='Check It Now 🎯', switch_inline_query_current_chat=text)
+                ]
+            ]
+        )
+        await message.reply_text(f"<code>{text}</code> Added", quote=True, reply_markup=reply_markup)
     except Exception as e:
         await message.reply(f'I got an error! \nError: {e}')
 
-    elif message.reply_to_message and message.reply_to_message.photo:
+    @CodeXBotz.on_message(filters.command(DELETE_COMMAND) & filters.admins)
+    async def del_filter(client: CodeXBotz, message: Message):
         try:
-            fileid = await upload_photo(message.reply_to_message)
-            if not fileid:
-                return
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
+            cmd, text = message.text.split(" ", 1)
         except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Photo'
-
-    elif message.reply_to_message and message.reply_to_message.video:
-        try:
-            fileid = message.reply_to_message.video.file_id
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Video'
-
-    elif message.reply_to_message and message.reply_to_message.audio:
-        try:
-            fileid = message.reply_to_message.audio.file_id
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Audio'
-   
-    elif message.reply_to_message and message.reply_to_message.document:
-        try:
-            fileid = message.reply_to_message.document.file_id
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Document'
-
-    elif message.reply_to_message and message.reply_to_message.animation:
-        try:
-            fileid = message.reply_to_message.animation.file_id
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Animation'
-
-    elif message.reply_to_message and message.reply_to_message.sticker:
-        try:
-            fileid = message.reply_to_message.sticker.file_id
-            reply_text, btn, alert =  generate_button(extracted[1], strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Sticker'
-
-    elif message.reply_to_message and message.reply_to_message.voice:
-        try:
-            fileid = message.reply_to_message.voice.file_id
-            reply_text, btn, alert = generate_button(message.reply_to_message.caption.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Voice'
-    elif message.reply_to_message and message.reply_to_message.video_note:
-        try:
-            fileid = message.reply_to_message.video_note.file_id
-            reply_text, btn, alert = generate_button(extracted[1], strid)
-        except Exception as a:
-            reply_text = ""
-            btn = []
-            alert = None
-        msg_type = 'Video Note'
-    elif message.reply_to_message and message.reply_to_message.text:
-        try:
-            fileid = None
-            reply_text, btn, alert = generate_button(message.reply_to_message.text.html, strid)
-        except:
-            reply_text = ""
-            btn = []
-            alert = None
-    else:
-        await message.reply('Not Supported..!')
-        return
-    
-    try:
-        if fileid:
-            if msg_type == 'Photo':
-                await message.reply_photo(
-                    photo = fileid,
-                    caption = reply_text,
-                    reply_markup = InlineKeyboardMarkup(btn) if len(btn) != 0 else None
-                )
-            else:
-                await message.reply_cached_media(
-                    file_id = fileid,
-                    caption = reply_text,
-                    reply_markup = InlineKeyboardMarkup(btn) if len(btn) != 0 else None
-                )
-        else:
-            await message.reply(
-                text = reply_text,
-                disable_web_page_preview = True,
-                reply_markup = InlineKeyboardMarkup(btn) if len(btn) != 0 else None
+            await message.reply_text(
+                "<i>Mention the filtername which you wanna delete!</i>\n\n"
+                f"<code>/{DELETE_COMMAND.lower()} filtername</code>\n\n"
+                "Use /filters to view all available filters",
+                quote=True
             )
-    except Exception as a:
-        try:
-            await message.reply(text = f"<b>❌ Error</b>\n\n{str(a)}\n\n<i>Join @TechnoKrrish for Support</i>")
-        except:
-            pass
-        return
+            return
 
-    await add_filter(text, reply_text, btn, fileid, alert, msg_type, strid)
-    reply_markup = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text = '📩 Share filter', switch_inline_query = text),
-                InlineKeyboardButton(text = 'Check It Now 🎯', switch_inline_query_current_chat = text)
-            ]
-        ]
-    )
-    await message.reply_text(f"<code>{text}</code> Added", quote = True, reply_markup = reply_markup)
-
-@CodeXBotz.on_message(filters.command(DELETE_COMMAND) & filters.admins)
-async def del_filter(client: CodeXBotz, message: Message):
-    try:
-        cmd, text = message.text.split(" ", 1)
-    except:
-        await message.reply_text(
-            "<i>Mention the filtername which you wanna delete!</i>\n\n"
-            f"<code>/{DELETE_COMMAND.lower()} filtername</code>\n\n"
-            "Use /filters to view all available filters",
-            quote=True
-        )
-        return
-
-    query = text.lower()
-    await delete_filter(message, query)
+        query = text.lower()
+        await delete_filter(message, query)
+    except Exception as e:
+        await message.reply(f'I got an error! \nError: {e}')        
     
 @CodeXBotz.on_message(filters.command('filters') & filters.admins)
 async def get_all(client: CodeXBotz, message: Message):
